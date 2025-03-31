@@ -1,10 +1,8 @@
 %{
-/*
- * this sample demonstrates (very) simple recognition:
- * a verb/not a verb.
- */
-
+#include <stdio.h>
+#include <ctype.h>  // For tolower function
 %}
+
 %%
 
 [\t ]+		/* ignore white space */ ;
@@ -28,15 +26,21 @@ could |
 has |
 have |
 had |
-go		{ printf("%s: is a verb\n", yytext); }
+go {
+    // Convert the verb to lowercase
+    for (int i = 0; yytext[i]; i++) {
+        yytext[i] = tolower(yytext[i]);
+    }
+    printf("%s: is a verb\n", yytext);
+}
 
 [a-zA-Z]+ 	{ printf("%s: is not a verb\n", yytext); }
 
-.|\n     	{ ECHO; 
-                    /* normal default anyway */ }
+.|\n     	{ ECHO; /* default action for other characters */ }
+
 %%
 
-main()
-{
- yylex();
+int main() {
+    yylex();  // Run the lexer
+    return 0;
 }
