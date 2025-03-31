@@ -1,11 +1,11 @@
 %{
 #include <stdio.h>
-#include <ctype.h>  // For tolower function
+#include <ctype.h>  // 用于 tolower 函数
 %}
 
 %%
 
-[\t ]+		/* ignore white space */ ;
+[\t ]+		/* 忽略空白字符 */ ;
 
 is |
 am |
@@ -27,20 +27,20 @@ has |
 have |
 had |
 go {
-    // Convert the verb to lowercase
+    // 将 yytext 转换为小写
     for (int i = 0; yytext[i]; i++) {
         yytext[i] = tolower(yytext[i]);
     }
-    printf("%s: is a verb\n", yytext);
+    printf("%s: is a verb\n", yytext);  // 打印小写形式的动词
 }
 
-[a-zA-Z]+ 	{ printf("%s: is not a verb\n", yytext); }
+[a-zA-Z]+ 	{ printf("%s: is not a verb\n", yytext); }  // 非动词的单词
 
-.|\n     	{ ECHO; /* default action for other characters */ }
+.|\n     	{ ECHO; /* 默认的动作，输出其它字符 */ }
 
 %%
 
 int main() {
-    yylex();  // Run the lexer
+    yylex();  // 运行词法分析器
     return 0;
 }
